@@ -1,6 +1,15 @@
 import { string, func, bool } from "prop-types";
 
-const Form = ({ className, inputValue, handleSubmit, handleInput, icon, btnText, label, loading }) => {
+const Form = ({
+  className,
+  inputValue,
+  handleSubmit,
+  handleInput,
+  icon,
+  btnText,
+  label,
+  loading,
+}) => {
   return (
     <form onSubmit={handleSubmit} className={className}>
       <label>{label}</label>
@@ -14,7 +23,7 @@ const Form = ({ className, inputValue, handleSubmit, handleInput, icon, btnText,
       />
       <button type="submit" className="add__todo" disabled={loading}>
         <span className="material-icons">{icon}</span>
-        {loading ? 'SAVING...' : btnText}
+        {loading ? "SAVING..." : btnText}
       </button>
     </form>
   );
@@ -35,8 +44,8 @@ Form.defaultProps = {
   icon: "add_circle",
   btnText: "ADD",
   label: "Create Todo",
-  inputValue: '',
-  className: 'create-form',
+  inputValue: "",
+  className: "create-form",
   loading: false,
 };
 
