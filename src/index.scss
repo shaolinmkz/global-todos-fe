@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  list-style: none;
+  font-family: "Lato", sans-serif;
+  box-sizing: border-box;
+}
+
+.no__todos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  p {
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+html {
+  font-size: 12pt;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: rgb(245, 245, 245);
+  min-width: 320px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: "liga";
+}
+
+.app__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.heading {
+  margin: 20px 0;
+}
+
+.todo__container {
+  height: 100%;
+  width: 100%;
+  max-width: 600px;
+  min-width: 280px;
+  padding: 0 20px;
+  box-shadow: 0px 10px 20px rgb(121, 121, 121);
+  border-radius: 10px 10px 0 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  width: 100%;
+
+  label,
+  input {
+    width: 100%;
+  }
+
+  label {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 15px 0;
+    font-size: 1rem;
+    border-bottom: 1px #ccc solid;
+
+    &:focus-within {
+      border-bottom: 1px rgb(115, 186, 245) solid;
+    }
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    width: 100%;
+    background: rgb(79, 155, 218);
+    color: #fff;
+    font-weight: bold;
+    gap: 5px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgb(89, 171, 238);
+    }
+  }
+}
+
+.todo__list {
+  overflow: auto;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    background: rgb(233, 233, 233);
+    padding: 20px 10px;
+    border-bottom: 1px #ccc solid;
+
+    &.complete {
+      text-decoration: line-through;
+    }
+
+    &.incomplete {
+      background: rgb(225, 242, 252);
+    }
+
+    button {
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.1s ease-in-out;
+    }
+
+    .button__container {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: inherit;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      transition: all 0.1s ease-in-out;
+    }
+
+    &:hover {
+      overflow: hidden;
+
+      button,
+      .button__container {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+span.complete {
+  color: green;
+}
+
+#modal {
+  position: fixed;
+  background: rgba(233, 233, 233, 0.9);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > form {
+    box-shadow: 0px 5px 20px rgb(168, 168, 168);
+    border-radius: 10px;
+    padding: 20px;
+    background: rgb(233, 233, 233);
+    max-width: 600px;
+  }
+}
