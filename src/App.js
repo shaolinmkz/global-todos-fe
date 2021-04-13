@@ -86,7 +86,9 @@ const App = (props) => {
           inputValue={todoTextCreate}
         />
 
-        <ul className="todo__list">
+        <ul className="todo__list" style={{
+          maxHeight: window.innerHeight  - (0.3676767 * window.innerHeight)
+        }}>
           {allTodos.map(({ _id, todoText, completed }) => (
             <TodoList
               key={_id}
@@ -124,6 +126,7 @@ const App = (props) => {
             btnText="Update"
             label="Update Todo"
             inputValue={todoTextEdit}
+            className="edit-form"
           />
         </div>
       )}

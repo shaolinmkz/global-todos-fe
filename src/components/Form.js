@@ -1,8 +1,8 @@
 import { string, func, bool } from "prop-types";
 
-const Form = ({ inputValue, handleSubmit, handleInput, icon, btnText, label, loading }) => {
+const Form = ({ className, inputValue, handleSubmit, handleInput, icon, btnText, label, loading }) => {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={className}>
       <label>{label}</label>
       <input
         type="text"
@@ -28,6 +28,7 @@ Form.propTypes = {
   icon: string,
   btnText: string,
   label: string,
+  className: string,
 };
 
 Form.defaultProps = {
@@ -35,6 +36,7 @@ Form.defaultProps = {
   btnText: "ADD",
   label: "Create Todo",
   inputValue: '',
+  className: 'create-form',
   loading: false,
 };
 
