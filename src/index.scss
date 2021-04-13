@@ -34,6 +34,10 @@
 
 button {
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 html {
@@ -165,8 +169,38 @@ form {
 
     button {
       visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
+      height: 35px;
+      width: 35px;
       transition: all 0.1s ease-in-out;
+
+      span {
+        pointer-events: none;
+      }
+
+      &:hover {
+        background: rgb(216, 216, 216);
+        border-radius: 50px;
+      }
+
+      &:active {
+        background: rgb(209, 209, 209);
+
+        span {
+          font-size: 25px;
+        }
+      }
+
+      &.complete:hover {
+        background: rgba(106, 177, 106, 0.1);
+      }
+
+      &.complete:active {
+        background: rgba(106, 177, 106, 0.2);
+      }
     }
 
     .button__container {
@@ -197,7 +231,7 @@ form {
 }
 
 span.complete {
-  color: green;
+  color: rgb(106, 177, 106);
 }
 
 #modal {

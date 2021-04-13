@@ -8,4 +8,4 @@ export const fetchSingleTodo = (todoId) => axios.get(`/todos/${todoId}`);
 
 export const updateTodo = (todoId, payload) => axios.put(`/todos/${todoId}`, payload)
 
-export const deleteUser = (todoId) => axios.delete(`/todos/${todoId}`);
+export const deleteTodo = (todoId) => axios.delete(`/todos/${todoId}`);

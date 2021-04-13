@@ -1,29 +1,50 @@
 import { useState, useEffect } from "react";
 import { useSelector, connect } from "react-redux";
-import { getTodosRequest } from "./actions/todos";
+import {
+  getTodosRequest,
+  createTodoRequest,
+  updateTodoRequest,
+  deleteTodoRequest,
+} from "./actions/todos";
 import Form from "./components/Form";
+import TodoList from "./components/TodoList";
 
 const App = (props) => {
-  const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [todoTextCreate, setTodoTextCreate] = useState("");
   const [todoTextEdit, setTodoTextEdit] = useState("");
-  const [editTodo, setEditTodo] = useState({
-    todoText: "",
-    completed: false,
-  });
+  const [editId, setEditId] = useState('');
 
-  const { todos: allTodos } = useSelector((store) => store.todos);
+  const {
+    todos: allTodos,
+    isCreating,
+  } = useSelector((store) => store.todos);
 
   const handleModal = () => {
-    setModalIsOpen((prevState) => !prevState);
+    setModalIsOpen((prevState) => {
+      if (prevState) {
+        setTodoTextEdit("");
+        setEditId("");
+      }
+      return !prevState;
+    });
   };
 
-  const handleSubmit = (event) => {
+  const handleCreateTodo = (event) => {
     event.preventDefault();
+
+    props.createTodoRequest({
+      todoText: todoTextCreate,
+    });
+
+    setTodoTextCreate("");
   };
 
-  const handleEdit = (event) => {
+  const handleEditTodo = (event) => {
     event.preventDefault();
+
+    props.updateTodoRequest(editId, { todoText: todoTextEdit });
+    handleModal();
   };
 
   const handleInput = ({ target: { value } }) => {
@@ -34,38 +55,46 @@ const App = (props) => {
     }
   };
 
+  const handleActions = (
+    { target: { id } },
+    { todoId, completed, todoText }
+  ) => {
+    if (id === "mark__complete") {
+      props.updateTodoRequest(todoId, { completed: !completed });
+    } else if (id === "edit") {
+      handleModal();
+      setTodoTextEdit(todoText);
+      setEditId(todoId);
+    } else if (id === "delete") {
+      props.deleteTodoRequest(todoId)
+    }
+  };
+
   useEffect(() => {
     props.getTodosRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="app__container">
       <h1 className="heading">Global Todo</h1>
       <div className="todo__container">
-        <Form handleSubmit={handleSubmit} handleInput={handleInput} />
+        <Form
+          loading={isCreating}
+          handleSubmit={handleCreateTodo}
+          handleInput={handleInput}
+          inputValue={todoTextCreate}
+        />
 
         <ul className="todo__list">
           {allTodos.map(({ _id, todoText, completed }) => (
-            <li key={_id} className={completed ? "complete" : "incomplete"}>
-              <p>{todoText}</p>
-              <div className="button__container">
-                <button type="button">
-                  <span
-                    className={`material-icons ${
-                      completed ? "complete" : "incomplete"
-                    }`}
-                  >
-                    {completed ? "check_circle" : "check_circle_outline"}
-                  </span>
-                </button>
-                <button type="button">
-                  <span className="material-icons ">edit</span>
-                </button>
-                <button type="button">
-                  <span className="material-icons">delete</span>
-                </button>
-              </div>
-            </li>
+            <TodoList
+              key={_id}
+              id={_id}
+              completed={completed}
+              todoText={todoText}
+              handleActions={handleActions}
+            />
           ))}
 
           {!allTodos.length && (
@@ -89,11 +118,12 @@ const App = (props) => {
           }}
         >
           <Form
-            handleSubmit={handleEdit}
+            handleSubmit={handleEditTodo}
             handleInput={handleInput}
             icon="update"
             btnText="Update"
             label="Update Todo"
+            inputValue={todoTextEdit}
           />
         </div>
       )}
@@ -103,6 +133,9 @@ const App = (props) => {
 
 const mapDispatchToProps = {
   getTodosRequest,
+  createTodoRequest,
+  updateTodoRequest,
+  deleteTodoRequest,
 };
 
 export default connect(null, mapDispatchToProps)(App);
