@@ -8,5 +8,14 @@
 * Run `yarn install`
 * Run `npm start`
 
+# E2E Test
+```sh
+  npm run cypress:open
+```
+* Run the command `npm run cypress:open`
+* When the test window opens, click the `test_CRUD.js` file
+* You can switch the frontend URL in the `test_CRUD.js` file
+
+
 ### Deployed To
 [Frontend URL](https://global-todo.netlify.app/)
