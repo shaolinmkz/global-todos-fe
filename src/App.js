@@ -18,6 +18,7 @@ const App = (props) => {
   const {
     todos: allTodos,
     isCreating,
+    pageLoading,
   } = useSelector((store) => store.todos);
 
   const handleModal = () => {
@@ -89,7 +90,7 @@ const App = (props) => {
         <ul className="todo__list" style={{
           maxHeight: window.innerHeight  - (0.3676767 * window.innerHeight)
         }}>
-          {allTodos.map(({ _id, todoText, completed }) => (
+          {!pageLoading && allTodos.map(({ _id, todoText, completed }) => (
             <TodoList
               key={_id}
               id={_id}
@@ -99,11 +100,19 @@ const App = (props) => {
             />
           ))}
 
-          {!allTodos.length && (
+          {!pageLoading && !allTodos.length && (
             <div className="no__todos">
               <div>
                 <span className="material-icons">description</span>
                 <p>NO TODOS</p>
+              </div>
+            </div>
+          )}
+
+          {pageLoading && (
+            <div className="loader">
+              <div>
+                <p>Loading...</p>
               </div>
             </div>
           )}

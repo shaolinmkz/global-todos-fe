@@ -3,7 +3,7 @@ import { Types } from "../actions/todos";
 const INITIAL_STATE = {
   todos: [],
   todo: null,
-  pageloading: true,
+  pageLoading: true,
   updateLoading: false,
   isCreating: false,
 };
