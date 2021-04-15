@@ -22,7 +22,7 @@ const Form = ({
         value={inputValue}
       />
       <button type="submit" className="add__todo" disabled={loading}>
-        <span className="material-icons">{icon}</span>
+        {!loading && <span className="material-icons">{icon}</span>}
         {loading ? "SAVING..." : btnText}
       </button>
     </form>

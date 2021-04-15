@@ -1,58 +1,57 @@
-import { useState, useEffect } from "react";
-import { useSelector, connect } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getTodosRequest,
   createTodoRequest,
   updateTodoRequest,
   deleteTodoRequest,
+  Types,
 } from "./actions/todos";
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
 
-const App = (props) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [todoTextCreate, setTodoTextCreate] = useState("");
-  const [todoTextEdit, setTodoTextEdit] = useState("");
-  const [editId, setEditId] = useState('');
+const App = () => {
+  const dispatch = useDispatch()
 
   const {
     todos: allTodos,
     isCreating,
     pageLoading,
+    updateLoading,
+    todoTextCreate,
+    todoTextEdit,
+    editId,
+    modalIsOpen,
   } = useSelector((store) => store.todos);
 
-  const handleModal = () => {
-    setModalIsOpen((prevState) => {
-      if (prevState) {
-        setTodoTextEdit("");
-        setEditId("");
-      }
-      return !prevState;
-    });
+  const handleModal = (value) => {
+    dispatch({ type: Types.OPEN_CLOSE_MODAL, payload: value });
+
+    if(!value) {
+      dispatch({ type: Types.TYPING_TODO_EDIT, payload: '' });
+      dispatch({ type: Types.GET_TODO_EDIT_ID, payload: '' });
+    }
   };
 
   const handleCreateTodo = (event) => {
     event.preventDefault();
 
-    props.createTodoRequest({
+    dispatch(createTodoRequest({
       todoText: todoTextCreate,
-    });
-
-    setTodoTextCreate("");
+    }))
   };
 
   const handleEditTodo = (event) => {
     event.preventDefault();
 
-    props.updateTodoRequest(editId, { todoText: todoTextEdit });
-    handleModal();
+   dispatch(updateTodoRequest(editId, { todoText: todoTextEdit }))
   };
 
   const handleInput = ({ target: { value } }) => {
     if (modalIsOpen) {
-      setTodoTextEdit(value);
+      dispatch({ type: Types.TYPING_TODO_EDIT, payload: value });
     } else {
-      setTodoTextCreate(value);
+      dispatch({ type: Types.TYPING_TODO_CREATE, payload: value });
     }
   };
 
@@ -61,20 +60,20 @@ const App = (props) => {
     { todoId, completed, todoText }
   ) => {
     if (id === "mark__complete") {
-      props.updateTodoRequest(todoId, { completed: !completed });
+      dispatch(updateTodoRequest(todoId, { completed: !completed }))
     } else if (id === "edit") {
-      handleModal();
-      setTodoTextEdit(todoText);
-      setEditId(todoId);
+      handleModal(true);
+      dispatch({ type: Types.TYPING_TODO_EDIT, payload: todoText });
+      dispatch({ type: Types.GET_TODO_EDIT_ID, payload: todoId });
     } else if (id === "delete") {
-      props.deleteTodoRequest(todoId)
+      dispatch(deleteTodoRequest(todoId))
     }
   };
 
   useEffect(() => {
-    props.getTodosRequest();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(getTodosRequest())
+  }, [dispatch]);
+
 
   return (
     <div className="app__container">
@@ -124,13 +123,14 @@ const App = (props) => {
           id="modal"
           onClick={({ target: { id } }) => {
             if (id === "modal") {
-              handleModal();
+              handleModal(false);
             }
           }}
         >
           <Form
             handleSubmit={handleEditTodo}
             handleInput={handleInput}
+            loading={updateLoading}
             icon="update"
             btnText="Update"
             label="Update Todo"
@@ -143,11 +143,6 @@ const App = (props) => {
   );
 };
 
-const mapDispatchToProps = {
-  getTodosRequest,
-  createTodoRequest,
-  updateTodoRequest,
-  deleteTodoRequest,
-};
 
-export default connect(null, mapDispatchToProps)(App);
+
+export default App;

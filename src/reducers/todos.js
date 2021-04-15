@@ -6,10 +6,34 @@ const INITIAL_STATE = {
   pageLoading: true,
   updateLoading: false,
   isCreating: false,
+  todoTextCreate: '',
+  todoTextEdit: '',
+  editId: '',
+  modalIsOpen: false,
 };
 
 const todoReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
+    case Types.TYPING_TODO_CREATE:
+      return {
+        ...state,
+        todoTextCreate: payload,
+      };
+    case Types.TYPING_TODO_EDIT:
+      return {
+        ...state,
+        todoTextEdit: payload,
+      };
+    case Types.GET_TODO_EDIT_ID:
+      return {
+        ...state,
+        editId: payload,
+      };
+    case Types.OPEN_CLOSE_MODAL:
+      return {
+        ...state,
+        modalIsOpen: payload,
+      };
     case Types.GET_TODOS_SUCCESS:
       return {
         ...state,

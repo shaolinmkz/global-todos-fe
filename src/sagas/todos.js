@@ -8,15 +8,20 @@ import {
 } from "redux-saga/effects";
 import * as actions from "../actions/todos";
 import * as api from "../api/todos";
+import notify from "../utils/notify";
 
 function* getTodos() {
-  const {
-    data: {
-      data: { todos },
-    },
-  } = yield call(api.fetchAllTodos);
+  try {
+    const {
+      data: {
+        data: { todos },
+      },
+    } = yield call(api.fetchAllTodos);
 
-  yield put(actions.getTodosSuccess(todos));
+    yield put(actions.getTodosSuccess(todos));
+  } catch (error) {
+    notify("error", "Error fetching todos");
+  }
 }
 
 function* watchGetTodosRequest() {
@@ -24,13 +29,17 @@ function* watchGetTodosRequest() {
 }
 
 function* getTodo({ todoId }) {
-  const {
-    data: {
-      data: { todo },
-    },
-  } = yield call(api.fetchSingleTodo, todoId);
+  try {
+    const {
+      data: {
+        data: { todo },
+      },
+    } = yield call(api.fetchSingleTodo, todoId);
 
-  yield put(actions.getTodoSuccess(todo));
+    yield put(actions.getTodoSuccess(todo));
+  } catch (error) {
+    notify("error", "Error fetching todo");
+  }
 }
 
 function* watchGetTodoRequest() {
@@ -50,6 +59,10 @@ function* createTodo({ payload }) {
     } = yield call(api.createTodo, payload);
 
     yield put(actions.createTodoSuccess(todo));
+    yield put({ type: actions.Types.TYPING_TODO_CREATE, payload: '' });
+    notify("success", "Todo created successfully");
+  } catch (error) {
+    notify("error", "Error creating a todo");
   } finally {
     yield put(actions.creatingTodo());
   }
@@ -60,13 +73,24 @@ function* watchCreateTodoRequest() {
 }
 
 function* updateTodo({ todoId, payload }) {
-  const {
-    data: {
-      data: { todo },
-    },
-  } = yield call(api.updateTodo, todoId, payload);
+  try {
+    yield put(actions.updateLoading());
 
-  yield put(actions.updatedTodoSuccess(todo));
+    const {
+      data: {
+        data: { todo },
+      },
+    } = yield call(api.updateTodo, todoId, payload);
+
+    yield put(actions.updatedTodoSuccess(todo));
+    yield put({ type: actions.Types.TYPING_TODO_EDIT, payload: '' });
+    yield put({ type: actions.Types.OPEN_CLOSE_MODAL, payload: false });
+    notify("success", "Todo updated successfully");
+  } catch (error) {
+    notify("error", "Error updating a todo");
+  } finally {
+    yield put(actions.updateLoading())
+  }
 }
 
 function* watchUpdateTodoRequest() {
@@ -77,9 +101,14 @@ function* watchUpdateTodoRequest() {
 }
 
 function* deleteTodo({ id }) {
-  yield call(api.deleteTodo, id);
+  try {
+    yield call(api.deleteTodo, id);
 
-  yield put(actions.deleteTodoSuccess(id));
+    yield put(actions.deleteTodoSuccess(id));
+    notify("success", "Todo deleted successfully");
+  } catch (error) {
+    notify("error", "Error deleting a todo");
+  }
 }
 
 function* watchDeleteTodoRequest() {

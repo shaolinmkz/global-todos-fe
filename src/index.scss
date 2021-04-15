@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;800;900&display=swap');
 
 *,
 *::after,
@@ -9,7 +9,7 @@
   padding: 0;
   outline: none;
   list-style: none;
-  font-family: "Lato", sans-serif;
+  font-family: "Nunito", sans-serif;
   box-sizing: border-box;
 }
 
@@ -214,6 +214,12 @@ form {
       height: 35px;
       width: 35px;
       transition: all 0.1s ease-in-out;
+
+      &#delete:hover {
+        span {
+          color: rgb(199, 79, 79);
+        }
+      }
 
       span {
         pointer-events: none;
