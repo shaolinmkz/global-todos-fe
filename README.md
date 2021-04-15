@@ -8,14 +8,19 @@
 * Run `yarn install`
 * Run `yarn start`
 
-# E2E Test
 ```sh
-  npm run cypress:open
+  git clone <REPO_URL> && cd global-todos-fe && yarn install && yarn start
 ```
-* Ensure you have completed the installation ang usage procedure above
-* Run the command `npm run cypress:open`
+
+# E2E Test
+* Ensure you have completed the installation and usage procedure above
+* Run the command `yarn cypress:open`
 * When the test window opens, click the `test_CRUD.js` file
 * You can switch the frontend URL in the `test_CRUD.js` file
+
+```sh
+  yarn cypress:open
+```
 
 
 ### Deployed To
