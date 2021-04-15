@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import swal from "sweetalert";
 import {
   getTodosRequest,
   createTodoRequest,
@@ -10,8 +11,9 @@ import {
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
 
+
 const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const {
     todos: allTodos,
@@ -27,24 +29,26 @@ const App = () => {
   const handleModal = (value) => {
     dispatch({ type: Types.OPEN_CLOSE_MODAL, payload: value });
 
-    if(!value) {
-      dispatch({ type: Types.TYPING_TODO_EDIT, payload: '' });
-      dispatch({ type: Types.GET_TODO_EDIT_ID, payload: '' });
+    if (!value) {
+      dispatch({ type: Types.TYPING_TODO_EDIT, payload: "" });
+      dispatch({ type: Types.GET_TODO_EDIT_ID, payload: "" });
     }
   };
 
   const handleCreateTodo = (event) => {
     event.preventDefault();
 
-    dispatch(createTodoRequest({
-      todoText: todoTextCreate,
-    }))
+    dispatch(
+      createTodoRequest({
+        todoText: todoTextCreate,
+      })
+    );
   };
 
   const handleEditTodo = (event) => {
     event.preventDefault();
 
-   dispatch(updateTodoRequest(editId, { todoText: todoTextEdit }))
+    dispatch(updateTodoRequest(editId, { todoText: todoTextEdit }));
   };
 
   const handleInput = ({ target: { value } }) => {
@@ -60,20 +64,32 @@ const App = () => {
     { todoId, completed, todoText }
   ) => {
     if (id === "mark__complete") {
-      dispatch(updateTodoRequest(todoId, { completed: !completed }))
+      dispatch(updateTodoRequest(todoId, { completed: !completed }));
     } else if (id === "edit") {
       handleModal(true);
       dispatch({ type: Types.TYPING_TODO_EDIT, payload: todoText });
       dispatch({ type: Types.GET_TODO_EDIT_ID, payload: todoId });
     } else if (id === "delete") {
-      dispatch(deleteTodoRequest(todoId))
+      swal({
+        title: 'Delete Todo',
+        text: 'Are you sure?',
+        icon: "warning",
+        dangerMode: true,
+        buttons: {
+          cancel: "Cancel",
+          confirm: "Delete",
+        },
+      }).then((proceed) => {
+        if(proceed) {
+          dispatch(deleteTodoRequest(todoId));
+        }
+      });
     }
   };
 
   useEffect(() => {
-    dispatch(getTodosRequest())
+    dispatch(getTodosRequest());
   }, [dispatch]);
-
 
   return (
     <div className="app__container">
@@ -86,18 +102,22 @@ const App = () => {
           inputValue={todoTextCreate}
         />
 
-        <ul className="todo__list" style={{
-          maxHeight: window.innerHeight  - (0.3676767 * window.innerHeight)
-        }}>
-          {!pageLoading && allTodos.map(({ _id, todoText, completed }) => (
-            <TodoList
-              key={_id}
-              id={_id}
-              completed={completed}
-              todoText={todoText}
-              handleActions={handleActions}
-            />
-          ))}
+        <ul
+          className="todo__list"
+          style={{
+            maxHeight: window.innerHeight - 0.3676767 * window.innerHeight,
+          }}
+        >
+          {!pageLoading &&
+            allTodos.map(({ _id, todoText, completed }) => (
+              <TodoList
+                key={_id}
+                id={_id}
+                completed={completed}
+                todoText={todoText}
+                handleActions={handleActions}
+              />
+            ))}
 
           {!pageLoading && !allTodos.length && (
             <div className="no__todos">
@@ -142,7 +162,5 @@ const App = () => {
     </div>
   );
 };
-
-
 
 export default App;

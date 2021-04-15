@@ -11,7 +11,8 @@
     "react-redux": "^7.2.3",
     "react-scripts": "4.0.3",
     "redux": "^4.0.5",
-    "redux-saga": "^1.1.3"
+    "redux-saga": "^1.1.3",
+    "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "cypress": "^7.1.0",
