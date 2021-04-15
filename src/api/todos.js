@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// Dev => "http://localhost:4040/api/v1"
+axios.defaults.baseURL = "https://global-todo.herokuapp.com/api/v1";
+
 /**
  * @description gets all todos
  * @function fetchAllTodos

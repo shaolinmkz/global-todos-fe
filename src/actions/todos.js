@@ -1,4 +1,8 @@
 export const Types = {
+  OPEN_CLOSE_MODAL: 'todo/open_close_modal',
+  GET_TODO_EDIT_ID: 'todo/get_edit_id',
+  TYPING_TODO_EDIT: 'todo/typing_edit',
+  TYPING_TODO_CREATE: 'todo/typing_create',
   CREATING_TODO: 'todo/creating_todo',
   UPDATE_LOADING: 'todo/update_loading',
   GET_TODOS_REQUEST: 'todo/get_todos_request',
