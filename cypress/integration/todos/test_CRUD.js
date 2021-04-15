@@ -61,7 +61,9 @@ describe("CRUD operation for a todo", () => {
       cy.get("ul > li")
         .first()
         .find(".button__container button#delete")
-        .click({ force: true });
+        .click({ force: true })
+        .get(':nth-child(2) > .swal-button')
+        .click();
     });
   });
 });
