@@ -6,7 +6,7 @@
 # Installaion and usage
 * Clone the repo and cd into it
 * Run `yarn install`
-* Run `npm start`
+* Run `yarn start`
 
 # E2E Test
 ```sh
