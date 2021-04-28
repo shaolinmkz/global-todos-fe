@@ -21,7 +21,7 @@ const Form = ({
         required
         value={inputValue}
       />
-      <button type="submit" className="add__todo" disabled={loading}>
+      <button type="submit" className="add__todo" disabled={[loading, !`${inputValue}`.replace(/\s+/gm, "")].includes(true)}>
         {!loading && <span className="material-icons">{icon}</span>}
         {loading ? "SAVING..." : btnText}
       </button>
